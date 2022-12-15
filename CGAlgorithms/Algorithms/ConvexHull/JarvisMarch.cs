@@ -12,21 +12,21 @@ namespace CGAlgorithms.Algorithms.ConvexHull
         public override void Run(List<Point> points, List<Line> lines, List<Polygon> polygons, ref List<Point> outPoints, ref List<Line> outLines, ref List<Polygon> outPolygons)
         {
             List<Point> Py = points.OrderByDescending(p => p.Y).ToList();
-            //List<Point> Px = points.OrderByDescending(p => p.X).ToList();
+            List<Point> Px = Py.OrderByDescending(p => p.X).ToList();
             List<Point> V = new List<Point>();
-            int x = 100000;
-            int y = (int)Py.Last().Y;
-            foreach (Point p in Py)
-            {
-                if (p.Y == y && p.X < x)
-                    x = (int)p.X;
-            }
+            //int x = 100000;
+            //int y = (int)Py.Last().Y;
+            //foreach (Point p in Py)
+            //{
+            //    if (p.Y == y && p.X < x)
+            //        x = (int)p.X;
+            //}
 
 
-            Point first = new Point(x,y);
+            Point first =Px.Last();
             V.Add(first);
             Point last = first;
-            Point current=new Point(first.X-1, first.Y);  
+            Point current=new Point(first.X-1, first.Y);
 
             int l = 0;
             if (points.Count < 4)

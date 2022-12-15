@@ -27,7 +27,7 @@ namespace CGUtilities
             if (GetVector(ca).Equals(Point.Identity)) return (PointOnSegment(p, ab.Start, ab.End)) ? Enums.PointInPolygon.OnEdge : Enums.PointInPolygon.Outside;
 
             if (CheckTurn(ab, p) == Enums.TurnType.Colinear)
-                return PointOnSegment(p, a, b)? Enums.PointInPolygon.OnEdge : Enums.PointInPolygon.Outside;
+                return PointOnSegment(p, a, b) ? Enums.PointInPolygon.OnEdge : Enums.PointInPolygon.Outside;
             if (CheckTurn(bc, p) == Enums.TurnType.Colinear && PointOnSegment(p, b, c))
                 return PointOnSegment(p, b, c) ? Enums.PointInPolygon.OnEdge : Enums.PointInPolygon.Outside;
             if (CheckTurn(ca, p) == Enums.TurnType.Colinear && PointOnSegment(p, c, a))
@@ -75,10 +75,10 @@ namespace CGUtilities
             return (Math.Abs(tx - ty) <= Constants.Epsilon && tx <= 1 && tx >= 0);
         }
         /// <summary>
-        /// Get turn type from cross product between two vectors (l.start -> l.end) and (l.end -> p)
+        /// Get turn type from cross product between two vectors(l.start -> l.end) and(l.end -> p)
         /// </summary>
-        /// <param name="l"></param>
-        /// <param name="p"></param>
+        /// <param name = "l" ></ param >
+        /// < param name="p"></param>
         /// <returns></returns>
         public static Enums.TurnType CheckTurn(Line l, Point p)
         {
@@ -86,9 +86,26 @@ namespace CGUtilities
             Point b = l.End.Vector(p);
             return HelperMethods.CheckTurn(a, b);
         }
+        public static Boolean InsidePolygon(List<Line> polygon, Point point)
+        {
+            //counter --> left
+            int polygonturn = -1;
+            if (HelperMethods.CheckTurn(polygon[0], polygon[1].End) == Enums.TurnType.Right)
+                polygonturn = 1;
+
+            foreach (Line line in polygon)
+            {
+                if (CheckTurn(line, point) == Enums.TurnType.Right&&polygonturn==-1)
+                    return false;
+                if (CheckTurn(line, point) == Enums.TurnType.Left && polygonturn == 1)
+                    return false;
+            }
+            return true;
+
+        }
         public static double GetAngel(Point a, Point b)
         {
-            return Math.Atan2(CrossProduct(a,b), DotProduct(a,b));
+            return Math.Atan2(CrossProduct(a, b), DotProduct(a, b));
         }
         public static double GetDistance(Point a, Point b)
         {
